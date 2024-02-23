@@ -1,8 +1,9 @@
 {
   "imu": {
-    "type": "pigeon2",
+    "type": "adxrs450",
     "id": 13,
-    "canbus": "canivore"
+    "canbus": null
+
   },
   "invertedIMU": true,
   "modules": [
