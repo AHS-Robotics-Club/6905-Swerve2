@@ -86,8 +86,9 @@ public class RobotContainer
         () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
         () -> driverXbox.getRawAxis(2));
 
+        //NOTE TO SELF SET THE THING TO DRIVEFIELDORIENTEDANGULARVELOCITY IF THIS DOESNT WORK :PRAY:
     drivebase.setDefaultCommand(
-        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
+        !RobotBase.isSimulation() ? closedAbsoluteDriveAdv : driveFieldOrientedDirectAngleSim);
   }
 
   /**
