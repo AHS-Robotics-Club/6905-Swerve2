@@ -88,7 +88,7 @@ public class RobotContainer
 
         //NOTE TO SELF SET THE THING TO DRIVEFIELDORIENTEDANGULARVELOCITY IF THIS DOESNT WORK :PRAY:
     drivebase.setDefaultCommand(
-        !RobotBase.isSimulation() ? closedAbsoluteDriveAdv : driveFieldOrientedDirectAngleSim);
+        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
   }
 
   /**

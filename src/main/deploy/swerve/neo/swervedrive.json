@@ -1,11 +1,11 @@
 {
   "imu": {
-    "type": "adxrs450",
+    "type": "navx_spi",
     "id": 13,
     "canbus": null
 
   },
-  "invertedIMU": false,
+  "invertedIMU": true,
   "modules": [
     "frontleft.json",
     "frontright.json",
