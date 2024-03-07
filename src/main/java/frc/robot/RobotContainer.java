@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.ArmSubby;
+import frc.robot.subsystems.IntakeSubby;
+import frc.robot.subsystems.ShooterSubby;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
@@ -37,6 +39,8 @@ public class RobotContainer
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo"));
   private final ArmSubby armSubby = new ArmSubby();
+  private final IntakeSubby intakeSubby = new IntakeSubby();
+  private final ShooterSubby shootSubby = new ShooterSubby();
 
                                                                         
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -104,13 +108,17 @@ public class RobotContainer
   {
 
     new JoystickButton(driverXbox, 1).onTrue(new InstantCommand(() -> armSubby.setPosition(0)));
-    new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> armSubby.setPosition(0.3)));
-    new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(() -> armSubby.setPosition(0.7)));
+    // new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> armSubby.setPosition(0.3)));
+    new JoystickButton(driverXbox, 4).onTrue(new InstantCommand(() -> armSubby.setPosition(0.7)));
+    new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> intakeSubby.intake())).onFalse(new InstantCommand(() -> intakeSubby.stop()));
+    // new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> armSubby.setPosition(0.3)));
+    new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(() -> intakeSubby.outtake())).onFalse(new InstantCommand(() -> intakeSubby.stop()));
+    new JoystickButton(driverXbox, 5).onTrue(new InstantCommand(() -> shootSubby.shoot())).onFalse(new InstantCommand(() -> shootSubby.stop()));
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    new JoystickButton(driverXbox, 5).onTrue((new InstantCommand(drivebase::zeroGyro)));
-    new JoystickButton(driverXbox, 9).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    new JoystickButton(driverXbox, 9).onTrue((new InstantCommand(drivebase::zeroGyro)));
+    new JoystickButton(driverXbox, 10).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     new JoystickButton(driverXbox,
                        10).whileTrue(
         Commands.deferredProxy(() -> drivebase.driveToPose(

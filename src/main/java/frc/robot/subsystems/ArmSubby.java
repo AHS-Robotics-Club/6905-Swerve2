@@ -20,23 +20,35 @@ public class ArmSubby extends SubsystemBase{
 
     private final ArmFeedforward feedforwardController = new ArmFeedforward(0, 0, 0);
     private final SparkPIDController pidfController = primary.getPIDController();
-    private double position;
+    private double position, kP, kI, kD, kG, kV;
     
     public ArmSubby(){
+        kP = 0;
+        kI = 0;
+        kD = 0;
+        kG = 0;
+        kV = 0;
+
         position = 0;
 
         primary.setIdleMode(IdleMode.kBrake);
         follower.setIdleMode(IdleMode.kBrake);
         follower.follow(primary, true);
 
-        pidfController.setP(0);
-        pidfController.setI(0);
-        pidfController.setD(0);
-        pidfController.setFF(feedforwardController.calculate(0, 0));
+        pidfController.setP(kP);
+        pidfController.setI(kI);
+        pidfController.setD(kD);
+        pidfController.setFF((new ArmFeedforward(0, kG, kV)).calculate(0, 1));//REPLACE 0 WITH ABS OFFSET
 
         pidfController.setOutputRange(-0.8, 0.8);
 
-        SmartDashboard.putString("position", String.valueOf(getPosition()));
+        SmartDashboard.putNumber("kP", kP);
+        SmartDashboard.putNumber("kI", kI);
+        SmartDashboard.putNumber("kD", kD);
+        SmartDashboard.putNumber("kG", kG);
+        SmartDashboard.putNumber("kV", kV);
+        SmartDashboard.putNumber("pos", position);
+        // SmartDashboard.putN("PID Controller", new PIDF);
     }
 
     public boolean atSetpoint() {
@@ -53,6 +65,21 @@ public class ArmSubby extends SubsystemBase{
 
     @Override
     public void periodic() {
+        double p = SmartDashboard.getNumber("kP", 0);
+        double i = SmartDashboard.getNumber("kI", 0);
+        double d = SmartDashboard.getNumber("kD", 0);
+        double g = SmartDashboard.getNumber("kG", 0);
+        double v = SmartDashboard.getNumber("kV", 0);
+        double pos = SmartDashboard.getNumber("pos", 0);
+
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+        if((p != kP)) { pidfController.setP(p); kP = p; }
+        if((i != kI)) { pidfController.setI(i); kI = i; }
+        if((d != kD)) { pidfController.setD(d); kD = d; }
+        if(g != kG || v != kV){
+            pidfController.setFF((new ArmFeedforward(0, g, v)).calculate(0, 1));//REPLACE 0 WITH ABSOLUTE OFFSET
+        }
+        if(pos != position){position = pos;}
         pidfController.setReference(position, CANSparkBase.ControlType.kPosition);
     }
 
