@@ -12,20 +12,29 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
 public class ShooterSubby extends SubsystemBase{
-    private CANSparkMax intakeMotor = new CANSparkMax(11, MotorType.kBrushless);
-    private CANSparkMax shootMotor = new CANSparkMax(11, MotorType.kBrushless);
+    private CANSparkMax loadMotor = new CANSparkMax(12, MotorType.kBrushless);
+    private CANSparkMax shootMotor = new CANSparkMax(14, MotorType.kBrushless);
 
     public void shoot(){
         new SequentialCommandGroup(
-            new InstantCommand(() -> intakeMotor.set(-0.05)),
+            new InstantCommand(() -> loadMotor.set(-0.05)),
             new WaitCommand(0.1),
-            new InstantCommand(() -> intakeMotor.set(0.8)),
+            new InstantCommand(() -> loadMotor.set(0.8)),
             new InstantCommand(() -> shootMotor.set(0.8)),
-            new WaitCommand(0.5)
+            new WaitCommand(1),
+            new InstantCommand(() -> loadMotor.stopMotor()),
+            new InstantCommand(() -> shootMotor.stopMotor())
         );
     }
     public void stop(){
-        intakeMotor.stopMotor();
+        loadMotor.stopMotor();
         shootMotor.stopMotor();
+    }
+    public void load(){
+        new SequentialCommandGroup(
+            new InstantCommand(() -> loadMotor.set(0.15)),
+            new WaitCommand(0.5),
+            new InstantCommand(() -> loadMotor.stopMotor())
+        );
     }
 }

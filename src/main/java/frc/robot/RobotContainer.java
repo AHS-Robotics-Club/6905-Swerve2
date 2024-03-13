@@ -20,9 +20,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
-import frc.robot.subsystems.ArmSubby;
 import frc.robot.subsystems.IntakeSubby;
 import frc.robot.subsystems.ShooterSubby;
+// import frc.robot.subsystems.ArmSubby;
+// import frc.robot.subsystems.IntakeSubby;
+// import frc.robot.subsystems.ShooterSubby;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 
@@ -38,7 +40,7 @@ public class RobotContainer
   
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo"));
-  private final ArmSubby armSubby = new ArmSubby();
+  // private final ArmSubby armSubby = new ArmSubby();
   private final IntakeSubby intakeSubby = new IntakeSubby();
   private final ShooterSubby shootSubby = new ShooterSubby();
 
@@ -53,6 +55,7 @@ public class RobotContainer
   {
     // Configure the trigger bindings
     configureBindings();
+    new InstantCommand(() -> intakeSubby.intake());
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
                                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -92,7 +95,8 @@ public class RobotContainer
         () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
         () -> driverXbox.getRawAxis(2));
 
-        //NOTE TO SELF SET THE THING TO DRIVEFIELDORIENTEDANGULARVELOCITY IF THIS DOESNT WORK :PRAY:
+        //driveFieldOrientedAnglularVelocity
+        //closedAbsoluteDriveAdv
     drivebase.setDefaultCommand(
         !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
   }
@@ -107,23 +111,23 @@ public class RobotContainer
   private void configureBindings()
   {
 
-    new JoystickButton(driverXbox, 1).onTrue(new InstantCommand(() -> armSubby.setPosition(0)));
+    // new JoystickButton(driverXbox, 1).onTrue(new InstantCommand(() -> armSubby.setPosition(0)));
+    // // new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> armSubby.setPosition(0.3)));
+    // new JoystickButton(driverXbox, 4).onTrue(new InstantCommand(() -> armSubby.setPosition(0.7)));
+    new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> shootSubby.shoot()));
     // new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> armSubby.setPosition(0.3)));
-    new JoystickButton(driverXbox, 4).onTrue(new InstantCommand(() -> armSubby.setPosition(0.7)));
-    new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> intakeSubby.intake())).onFalse(new InstantCommand(() -> intakeSubby.stop()));
-    // new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> armSubby.setPosition(0.3)));
-    new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(() -> intakeSubby.outtake())).onFalse(new InstantCommand(() -> intakeSubby.stop()));
-    new JoystickButton(driverXbox, 5).onTrue(new InstantCommand(() -> shootSubby.shoot())).onFalse(new InstantCommand(() -> shootSubby.stop()));
+    new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(() -> shootSubby.load()));
+    new JoystickButton(driverXbox, 4).onTrue(new InstantCommand(() -> intakeSubby.stop())).onFalse(new InstantCommand(() -> intakeSubby.intake()));
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    new JoystickButton(driverXbox, 9).onTrue((new InstantCommand(drivebase::zeroGyro)));
-    new JoystickButton(driverXbox, 10).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driverXbox,
-                       10).whileTrue(
-        Commands.deferredProxy(() -> drivebase.driveToPose(
-                                   new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                              ));
+  
+    new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
+    // new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    // new JoystickButton(driverXbox,
+    //                    10).whileTrue(
+    //     Commands.deferredProxy(() -> drivebase.driveToPose(
+    //                                new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+    //                           ));
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
 
