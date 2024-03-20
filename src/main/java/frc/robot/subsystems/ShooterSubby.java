@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
 public class ShooterSubby extends SubsystemBase{
-    private CANSparkMax loadMotor = new CANSparkMax(12, MotorType.kBrushless);
-    private CANSparkMax shootMotor = new CANSparkMax(14, MotorType.kBrushless);
+    private CANSparkMax loadMotor = new CANSparkMax(4   , MotorType.kBrushless);
+    private CANSparkMax shootMotor = new CANSparkMax(6, MotorType.kBrushless);
 
     public void shoot(){
         new SequentialCommandGroup(

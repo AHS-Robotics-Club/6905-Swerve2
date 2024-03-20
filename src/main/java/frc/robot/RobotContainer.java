@@ -55,7 +55,7 @@ public class RobotContainer
   {
     // Configure the trigger bindings
     configureBindings();
-    new InstantCommand(() -> intakeSubby.intake());
+    // new InstantCommand(() -> intakeSubby.intake());
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
                                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -97,8 +97,8 @@ public class RobotContainer
 
         //driveFieldOrientedAnglularVelocity
         //closedAbsoluteDriveAdv
-    drivebase.setDefaultCommand(
-        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
+    // drivebase.setDefaultCommand(
+    //     !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
   }
 
   /**
@@ -117,11 +117,11 @@ public class RobotContainer
     new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> shootSubby.shoot()));
     // new JoystickButton(driverXbox, 2).onTrue(new InstantCommand(() -> armSubby.setPosition(0.3)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(() -> shootSubby.load()));
-    new JoystickButton(driverXbox, 4).onTrue(new InstantCommand(() -> intakeSubby.stop())).onFalse(new InstantCommand(() -> intakeSubby.intake()));
+    // new JoystickButton(driverXbox, 4).onTrue(new InstantCommand(() -> intakeSubby.stop())).onFalse(new InstantCommand(() -> intakeSubby.intake()));
   
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
   
-    new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
+    // new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
     // new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     // new JoystickButton(driverXbox,
     //                    10).whileTrue(

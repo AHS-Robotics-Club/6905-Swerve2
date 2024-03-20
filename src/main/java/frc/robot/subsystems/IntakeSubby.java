@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class IntakeSubby extends SubsystemBase{
-    private CANSparkMax intakeMotor = new CANSparkMax(11, MotorType.kBrushless);
+    private CANSparkMax intakeMotor = new CANSparkMax(1, MotorType.kBrushless);
 
     public void intake(){
         intakeMotor.set(0.45);
